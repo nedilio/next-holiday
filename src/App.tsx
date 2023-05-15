@@ -129,12 +129,7 @@ const HOLIDAYS = [
   },
 ];
 
-// const timeZoneOffset = new Date().getTimezoneOffset() / 60 - 1;
-
 const today = new Date();
-// new Date().getFullYear(),
-// new Date().getMonth(),
-// new Date().getDate()
 
 const nextHoliday = HOLIDAYS.find((holiday) => holiday.date > today) || {
   ...HOLIDAYS[0],
@@ -156,6 +151,10 @@ function App() {
       <h1 className="text-5xl font-black text-purple-600 mb-4 italic">
         Next<span className="text-white">Holiday</span>📅
       </h1>
+
+      <h2 className="text-2xl font-black text-purple-600 mb-4 italic">
+        {"Hoy es: " + today.toLocaleDateString("es-CL")}
+      </h2>
       <p className="text-3xl font-bold italic">
         El próximo feriado es:{" "}
         <span className="text-purple-600 font-black block">
