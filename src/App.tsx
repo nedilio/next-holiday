@@ -1,4 +1,5 @@
 import "./App.css";
+import useToday from "./hooks/useToday";
 
 const HOLIDAYS = [
   {
@@ -146,23 +147,32 @@ const msDiff = nextHoliday.date.getTime() - today.getTime();
 const daysDiff = Math.ceil(msDiff / 86400000);
 
 function App() {
+  const { today: now } = useToday();
   return (
     <>
-      <h1 className="text-5xl font-black text-purple-600 mb-4 italic">
+      <h1 className="text-5xl font-black text-purple-500 mb-4 italic">
         Next<span className="text-white">Holiday</span>📅
       </h1>
 
-      <h2 className="text-2xl font-black text-purple-600 mb-4 italic">
-        {"Hoy es: " + today.toLocaleDateString("es-CL")}
+      <h2 className="text-2xl font-semibold text-purple-500 mb-4 italic">
+        {"Hoy es: " +
+          now.toLocaleDateString("es-CL", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          })}
       </h2>
       <p className="text-3xl font-bold italic">
         El próximo feriado es:{" "}
-        <span className="text-purple-600 font-black block">
+        <span className="text-purple-500 font-black block">
           {nextHoliday.title}
         </span>
       </p>
       <p>
-        <span className="text-purple-600 font-bold block italic text-3xl">
+        <span className="text-purple-500 font-bold block italic text-3xl">
           {nextHoliday.date.toLocaleDateString("es-CL", {
             weekday: "long",
             day: "numeric",
@@ -173,7 +183,7 @@ function App() {
       </p>
       <p className="text-3xl font-bold italic">
         y {daysDiff > 1 ? "Faltan " : "Falta "}
-        <span className="text-purple-600 font-black">{daysDiff}</span>
+        <span className="text-purple-500 font-black">{daysDiff}</span>
         {daysDiff > 1 ? " días" : " día"}.
       </p>
     </>
