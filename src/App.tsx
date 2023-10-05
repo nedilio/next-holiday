@@ -186,6 +186,23 @@ function App() {
         <span className="text-purple-500 font-black">{daysDiff}</span>
         {daysDiff > 1 ? " días" : " día"}.
       </p>
+      <h2 className="text-2xl font-bold mb-4 italic mt-8 italic">
+        <span className="text-purple-500">Próximos</span>Feriados
+      </h2>
+      {HOLIDAYS.filter((holiday) => holiday.date > now).map((holiday) => (
+        <div
+          key={holiday.date.getTime()}
+          className="flex gap-2 text-sm font-bold italic justify-center"
+        >
+          <p>{holiday.title}</p>
+          <p className="text-purple-500">
+            {holiday.date.toLocaleDateString("es-CL", {
+              day: "numeric",
+              month: "short",
+            })}
+          </p>
+        </div>
+      ))}
     </>
   );
 }
