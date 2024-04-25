@@ -1,55 +1,38 @@
+import { useEffect, useState } from "react";
 import "./App.css";
 import useToday from "./hooks/useToday";
-
-const HOLIDAYS = [
-  {
-    date: new Date("2024-01-01"),
-    title: "Año Nuevo",
-    inalienable: true,
-    type: "Civil",
-    extra: "Civil e Irrenunciable",
-  },
-  {
-    date: new Date("2024-03-29"),
-    title: "Viernes Santo",
-    type: "Religioso",
-    inalienable: false,
-    extra: "Religioso",
-  },
-  {
-    date: new Date("2024-03-30"),
-    title: "Sábado Santo",
-    type: "Religioso",
-    inalienable: false,
-    extra: "Religioso",
-  },
-  {
-    date: new Date("2024-05-01"),
-    title: "Día Nacional del Trabajo",
-    type: "Civil",
-    inalienable: true,
-    extra: "Civil e Irrenunciable",
-  },
-];
+import { getHolidays } from "./services/index";
 
 const today = new Date();
 
-const nextHoliday = HOLIDAYS.find((holiday) => holiday.date > today) || {
-  ...HOLIDAYS[0],
-  date: new Date(
-    new Date(HOLIDAYS[0].date).getFullYear() + 1,
-    new Date(HOLIDAYS[0].date).getMonth(),
-    new Date(HOLIDAYS[0].date).getDate(),
-    new Date(HOLIDAYS[0].date).getHours()
-  ),
-};
-
-const msDiff = nextHoliday.date.getTime() - today.getTime();
-
-const daysDiff = Math.ceil(msDiff / 86400000);
-
 function App() {
+  const [holidays, setHolidays] = useState<
+    | {
+        date: Date;
+        title: string;
+      }[]
+    | null
+  >(null);
+  useEffect(() => {
+    getHolidays().then((res) => setHolidays(res));
+  });
+  if (!holidays) return <p>Loading...</p>;
+
+  const nextHoliday = holidays.find((holiday) => holiday.date > today) || {
+    ...holidays[0],
+    date: new Date(
+      new Date(holidays[0].date).getFullYear() + 1,
+      new Date(holidays[0].date).getMonth(),
+      new Date(holidays[0].date).getDate(),
+      new Date(holidays[0].date).getHours()
+    ),
+  };
+
+  const msDiff = nextHoliday.date.getTime() - today.getTime();
+
+  const daysDiff = Math.ceil(msDiff / 86400000);
   const { today: now } = useToday();
+
   return (
     <>
       <h1 className="text-5xl font-black text-purple-500 mb-4 italic">
@@ -91,20 +74,22 @@ function App() {
       <h2 className="text-2xl font-bold mb-4 italic mt-8">
         <span className="text-purple-500">Próximos</span>Feriados
       </h2>
-      {HOLIDAYS.filter((holiday) => holiday.date > now).map((holiday) => (
-        <div
-          key={holiday.date.getTime()}
-          className="flex gap-2 text-sm font-bold italic justify-center"
-        >
-          <p>{holiday.title}</p>
-          <p className="text-purple-500">
-            {holiday.date.toLocaleDateString("es-CL", {
-              day: "numeric",
-              month: "short",
-            })}
-          </p>
-        </div>
-      ))}
+      {holidays
+        .filter((holiday) => holiday.date > now)
+        .map((holiday) => (
+          <div
+            key={holiday.date.getTime()}
+            className="flex gap-2 text-sm font-bold italic justify-center"
+          >
+            <p>{holiday.title}</p>
+            <p className="text-purple-500">
+              {holiday.date.toLocaleDateString("es-CL", {
+                day: "numeric",
+                month: "short",
+              })}
+            </p>
+          </div>
+        ))}
     </>
   );
 }
