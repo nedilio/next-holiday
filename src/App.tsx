@@ -6,17 +6,17 @@ import { getHolidays } from "./services/index";
 const today = new Date();
 
 function App() {
-  const { today: now } = useToday();
   const [holidays, setHolidays] = useState<
+    | null
     | {
         date: Date;
         title: string;
       }[]
-    | null
   >(null);
   useEffect(() => {
     getHolidays().then((res) => setHolidays(res));
-  });
+  }, []);
+  const { today: now } = useToday();
   if (!holidays) return <p>Loading...</p>;
 
   const nextHoliday = holidays.find((holiday) => holiday.date > today) || {
