@@ -6,6 +6,7 @@ import { getHolidays } from "./services/index";
 const today = new Date();
 
 function App() {
+  const { today: now } = useToday();
   const [holidays, setHolidays] = useState<
     | {
         date: Date;
@@ -31,7 +32,6 @@ function App() {
   const msDiff = nextHoliday.date.getTime() - today.getTime();
 
   const daysDiff = Math.ceil(msDiff / 86400000);
-  const { today: now } = useToday();
 
   return (
     <>
