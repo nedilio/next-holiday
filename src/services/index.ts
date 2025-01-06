@@ -27,7 +27,7 @@ export const getHolidays = async (): Promise<
     const [, textDate] = dia.split(", ");
     const [day, month] = textDate.split(" de ");
 
-    const date = new Date(`2024-${MONTHS[month]}-${day} 00:00:00`);
+    const date = new Date(`2025-${MONTHS[month]}-${day} 00:00:00`);
     return {
       date,
       title,
