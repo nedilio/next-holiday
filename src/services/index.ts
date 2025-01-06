@@ -16,7 +16,7 @@ export const getHolidays = async (): Promise<
     Diciembre: "12",
   };
   const res = await fetch(
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWguUGcl-v0rYpFaqt5Dm6fV9jG67-iB_Gqk2FsljyyPML4rkX8foij-kjlNnHpQvjxCR5yBgtvziJ/pub?gid=0&single=true&output=tsv"
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWguUGcl-v0rYpFaqt5Dm6fV9jG67-iB_Gqk2FsljyyPML4rkX8foij-kjlNnHpQvjxCR5yBgtvziJ/pub?output=tsv"
   );
   if (!res.ok) throw new Error("Error fetching holidays");
   const csv = await res.text();
